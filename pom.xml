@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>hello-world</artifactId>
+  <artifactId>ocr</artifactId>
   <packaging>jar</packaging>
-  <name>Cloud Code Hello World for Cloud Run</name>
-  <description>Getting started with Cloud Code for Cloud Run</description>
+  <name>OCR API Endpoint</name>
+  <description>OCR API Endpoint</description>
   <version>1.0.0</version>
 
   <parent>
@@ -76,6 +76,11 @@
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger-ui</artifactId>
       <version>2.9.2</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.tess4j</groupId>
+      <artifactId>tess4j</artifactId>
+      <version>4.5.1</version>
     </dependency>
   </dependencies>
   <build>

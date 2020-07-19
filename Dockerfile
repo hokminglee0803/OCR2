@@ -1,5 +1,6 @@
 # Use the official maven/Java 8 image to create a build artifact.
 # https://hub.docker.com/_/maven
+
 FROM maven:3-jdk-8-slim AS build-env
 
 # Set the working directory to /app
@@ -8,6 +9,11 @@ WORKDIR /app
 COPY pom.xml ./
 # Copy local code to the container image.
 COPY src ./src
+
+# Download last language package
+RUN mkdir -p ./usr/share/tessdata
+ADD https://github.com/tesseract-ocr/tessdata/raw/master/eng.traineddata ./usr/share/tessdata/eng.traineddata
+
 
 # Download dependencies and build a release artifact.
 RUN mvn package -DskipTests
@@ -19,7 +25,9 @@ RUN mvn package -DskipTests
 FROM adoptopenjdk/openjdk8:alpine-slim
 
 # Copy the jar to the production image from the builder stage.
-COPY --from=build-env /app/target/hello-world-*.jar /hello-world.jar
-
+COPY --from=build-env /app/target/ocr-*.jar /ocr.jar
+COPY --from=build-env /app/usr/share/tessdata/eng.traineddata /tessdata/eng.traineddata
+# Install tesseract library
+RUN apk add --update --no-cache tesseract-ocr
 # Run the web service on container startup.
-CMD ["java", "-jar", "/hello-world.jar"]
+CMD ["java", "-jar", "/ocr.jar"]
